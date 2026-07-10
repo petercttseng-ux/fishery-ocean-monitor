@@ -41,15 +41,14 @@ body {
   border-bottom: 1px solid var(--border);
   flex: 0 0 auto;
 }
-.brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.brand { display: flex; align-items: center; gap: 10px; min-width: 0; height: 100%; padding: 7px 0; }
 .brand-mark { font-size: 26px; }
 .brand-logo {
-  /* 隨頁首高度自動縮放 */
-  height: calc(var(--header-h) - 14px);
+  /* 自動縮放：完全貼合上層頁首框架高度（扣除上下留白） */
+  height: 100%;
   width: auto;
   aspect-ratio: 1 / 1;
-  max-height: 48px;
-  min-height: 30px;
+  object-fit: contain;
   border-radius: 50%;
   flex: 0 0 auto;
   background: #fff;
