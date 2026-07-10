@@ -160,4 +160,12 @@ class JMADataParser:
                             arr[i, j] = np.nan if value == cfg['missing_value'] else value * cfg['value_scale']
                         except:
                             arr[i, j] = np.nan
-                return np.ma.masked_invalid(
+                return np.ma.masked_invalid(arr)
+            
+            u = parse_component(2)
+            v = parse_component(399)
+            
+            return NPRSUBCData(date=date, lat=lat, lon=lon, u=u, v=v, filepath=filepath)
+        except Exception as e:
+            print(f"Error parsing NPRSUBC: {e}")
+            return None
