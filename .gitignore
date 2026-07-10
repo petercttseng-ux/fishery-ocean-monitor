@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+# 產生的資料（由 GitHub Actions 於部署時抓取）
+site/data/
+data/
+
+# 系統
+.DS_Store
+Thumbs.db
+desktop.ini

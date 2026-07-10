@@ -1,0 +1,62 @@
+# 漁海況速報系統 - 每日資料更新與 GitHub Pages 部署
+# 農業部水產試驗所 漁海況研究小組
+name: Update data & deploy
+
+on:
+  schedule:
+    # 每日 22:30 UTC = 台灣時間 06:30
+    - cron: "30 22 * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install numpy requests
+
+      - name: Restore data cache
+        uses: actions/cache@v4
+        with:
+          path: site/data
+          key: jma-data-${{ github.run_id }}
+          restore-keys: |
+            jma-data-
+
+      - name: Fetch JMA ocean data
+        run: python scripts/fetch_data.py --out site/data --days 10
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
