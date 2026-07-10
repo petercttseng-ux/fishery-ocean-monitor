@@ -44,7 +44,12 @@ body {
 .brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
 .brand-mark { font-size: 26px; }
 .brand-logo {
-  width: 42px; height: 42px;
+  /* 隨頁首高度自動縮放 */
+  height: calc(var(--header-h) - 14px);
+  width: auto;
+  aspect-ratio: 1 / 1;
+  max-height: 48px;
+  min-height: 30px;
   border-radius: 50%;
   flex: 0 0 auto;
   background: #fff;
@@ -260,7 +265,10 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
 
 /* 窄螢幕 */
 @media (max-width: 760px) {
+  :root { --header-h: 48px; }
   .brand-text p { display: none; }
+  .brand-text h1 { font-size: 14px; }
+  .brand-text h1 .ver { display: none; }
   .sidebar { position: absolute; z-index: 1500; height: 100%; }
   .app-footer { font-size: 9px; }
 }
