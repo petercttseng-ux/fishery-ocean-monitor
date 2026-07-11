@@ -594,7 +594,41 @@ async function update() {
   }
 }
 
+/* ---------------- 載入最新資料 ---------------- */
+async function loadLatest() {
+  const btn = $("reloadBtn");
+  const label = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = "更新中…";
+  setStatus("正在檢查最新資料…");
+  try {
+    const r = await fetch(`${DATA_ROOT}index.json?t=${Date.now()}`, { cache: "reload" });
+    if (!r.ok) throw new Error("index.json 載入失敗");
+    const idx = await r.json();
+    const prevNewest = state.index?.products?.[state.product]?.dates?.[0] || null;
+    state.index = idx;
+    fieldCache.clear();
+    const newest = productMeta().dates[0] || null;
+    state.date = newest;
+    populateDates();
+    applyProductUI();
+    await update();
+    if (newest && newest !== prevNewest) {
+      setStatus(`已更新至最新分析：${fmtDate(newest)}`, "ok");
+    } else if (newest) {
+      setStatus(`已是最新資料：${fmtDate(newest)}`, "ok");
+    }
+  } catch (e) {
+    console.error(e);
+    setStatus("載入最新資料失敗", "err");
+  } finally {
+    btn.disabled = false;
+    btn.textContent = label;
+  }
+}
+
 function bindUI() {
+  $("reloadBtn").onclick = loadLatest;
   document.querySelectorAll(".ptab").forEach(btn => {
     btn.onclick = () => {
       state.product = btn.dataset.product;

@@ -271,3 +271,17 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
   .sidebar { position: absolute; z-index: 1500; height: 100%; }
   .app-footer { font-size: 9px; }
 }
+
+
+/* 載入最新資料按鈕 */
+.btn-reload {
+  width: 100%; margin-bottom: 8px; padding: 7px 10px;
+  background: linear-gradient(135deg, #0e5a8a, #0a7ea4);
+  color: #fff; border: 1px solid rgba(255,255,255,.18);
+  border-radius: 8px; font-size: 13px; font-weight: 600;
+  letter-spacing: .5px; cursor: pointer;
+  transition: filter .15s, transform .05s;
+}
+.btn-reload:hover { filter: brightness(1.18); }
+.btn-reload:active { transform: scale(.98); }
+.btn-reload:disabled { opacity: .55; cursor: wait; }
