@@ -555,6 +555,8 @@ function applyProductUI() {
   const isCur = state.product === "nprsubc";
   $("depthRow").classList.toggle("hidden", !isSubT);
   $("isoPanel").classList.toggle("hidden", isCur);
+  $("comparePanel").classList.toggle("hidden", isCur);
+  if (isCur && state.compare) { state.compare = false; $("compareToggle").checked = false; }
   $("currentPanel").classList.toggle("hidden", state.product !== "himsst");
   document.querySelectorAll(".ptab").forEach(b =>
     b.classList.toggle("active", b.dataset.product === state.product));
